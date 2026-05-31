@@ -1,16 +1,14 @@
-<div align="center">
+# STL Adapters
 
-![preview](preview.jpg)
+> [Русская версия](README_RU.md)
 
 [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue?logo=cplusplus&logoColor=white)](https://en.cppreference.com/w/cpp/23)
 [![CMake](https://img.shields.io/badge/CMake-3.12%2B-064F8C?logo=cmake&logoColor=white)](https://cmake.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-</div>
+Header-only C++23 pipeline library with lazy adapters for data processing — filter, transform, split, join, and file I/O, composed via `|`. Written as part of a C++ course at ITMO University.
 
-Header-only библиотека ленивых адаптеров для pipeline-обработки данных на C++23. Написана в рамках курса по C++ в ИТМО.
-
-Адаптеры соединяются через `|` и работают лениво (кроме `AggregateByKey`, `Join`, `SplitExpected`).
+Adapters are lazy by default (except `AggregateByKey`, `Join`, and `SplitExpected`).
 
 ```cpp
 Dir("./data", /*recursive=*/false)
@@ -20,31 +18,31 @@ Dir("./data", /*recursive=*/false)
   | Out(std::cout);
 ```
 
-## Адаптеры
+## Adapters
 
-| Адаптер | Описание |
+| Adapter | Description |
 |---|---|
-| `Dir(path, recursive)` | файлы в директории, опционально рекурсивно |
-| `OpenFiles()` | открывает каждый путь как файловый поток, выдаёт строки |
-| `Split(delimiters)` | разбивает строки по набору символов-делимитеров |
-| `Filter(pred)` | фильтрация по предикату |
-| `Transform(func)` | применяет функцию к каждому элементу |
-| `AsDataFlow(vec)` | превращает `std::vector` в поток |
-| `Out(ostream)` | выводит элементы в поток (терминальный) |
-| `Write(ostream, delim)` | то же, но с заданным разделителем между элементами |
-| `AsVector()` | собирает поток в `std::vector` (терминальный) |
-| `Join(right, lkey, rkey)` | LEFT JOIN двух потоков по ключу |
-| `DropNullopt()` | отфильтровывает `std::nullopt` из потока `optional<T>` |
-| `SplitExpected()` | разделяет поток `expected<T,E>` на два: значения и ошибки |
-| `AggregateByKey(init, agg, key)` | агрегация значений по ключу через функцию-агрегатор |
+| `Dir(path, recursive)` | files in a directory, optionally recursive |
+| `OpenFiles()` | opens each path as a file stream, yields lines |
+| `Split(delimiters)` | splits strings by a set of delimiter characters |
+| `Filter(pred)` | filters elements by predicate |
+| `Transform(func)` | applies a function to each element |
+| `AsDataFlow(vec)` | wraps a `std::vector` into a stream |
+| `Out(ostream)` | prints elements to a stream *(terminal)* |
+| `Write(ostream, delim)` | same, but with a custom delimiter between elements *(terminal)* |
+| `AsVector()` | collects stream into a `std::vector` *(terminal)* |
+| `Join(right, lkey, rkey)` | LEFT JOIN of two streams by key |
+| `DropNullopt()` | filters `std::nullopt` from an `optional<T>` stream |
+| `SplitExpected()` | splits an `expected<T,E>` stream into values and errors |
+| `AggregateByKey(init, agg, key)` | aggregates values by key via an accumulator function |
 
-## Сборка
+## Build
 
 ```bash
-git clone https://github.com/notakeith/processing-pipeline.git
-cd processing-pipeline
+git clone https://github.com/notakeith/stl-adapters.git
+cd stl-adapters
 cmake -B build && cmake --build build
 ctest --test-dir build
 ```
 
-Требования: CMake ≥ 3.12, GCC 13+ или Clang 17+.
+Requirements: CMake ≥ 3.12, GCC 13+ or Clang 17+.
