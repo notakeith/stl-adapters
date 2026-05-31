@@ -170,7 +170,7 @@ class FileContentStream : public DataStream<std::string> {
 
         FileIterator(std::unique_ptr<DataStream<fs::path>::Iterator>&& path_it)
             : path_it(std::move(path_it)),
-              is_end(!this->path_it || *this->path_it == *path_end) {
+              is_end(!this->path_it) {
             if (this->path_it) {
                 open_next_file();
             }
@@ -295,7 +295,7 @@ class VectorDataStream : public DataStream<T> {
         }
 
         bool operator==(const typename DataStream<T>::Iterator& other) const override {
-            return operator!=(other);
+            return !operator!=(other);
         }
 
         bool getIsEnd() const override {
